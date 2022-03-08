@@ -6,5 +6,17 @@ To resolve this, rebase against latest master and regenerate your migration. Thi
 will then be regenerated, and you should be able to merge without conflicts.
 
 nodestore: 0002_nodestore_no_dictfield
+<<<<<<< HEAD
 sentry: 0282_add_field_aliases_dashboard_widget_query
+=======
+<<<<<<< HEAD
+sentry: 0281_add_new_indexer_table
+=======
+<<<<<<< HEAD
+sentry: 0280_extend_commit_author_email_length
+=======
+sentry: 0280_environment_bookmarks
+>>>>>>> 37c6462520 (feat(environments): Add bookmarking functionality)
+>>>>>>> 252a8fcc8a (feat(environments): Add bookmarking functionality)
+>>>>>>> 3d08579afdc (feat(environments): Add bookmarking functionality)
 social_auth: 0001_initial
