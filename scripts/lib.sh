@@ -194,7 +194,8 @@ run-dependent-services() {
 
 create-db() {
     echo "--> Creating 'sentry' database"
-    docker exec sentry_postgres createdb -h 127.0.0.1 -U postgres -E utf-8 sentry || true
+    # docker exec sentry_postgres createdb -h 127.0.0.1 -U postgres -E utf-8 sentry || true
+    /usr/local/opt/postgresql@9.6/bin/createdb -h 127.0.0.1 -E utf-8 sentry || true
 }
 
 apply-migrations() {
@@ -241,7 +242,9 @@ clean() {
 
 drop-db() {
     echo "--> Dropping existing 'sentry' database"
-    docker exec sentry_postgres dropdb -h 127.0.0.1 -U postgres sentry || true
+    # docker exec sentry_postgres dropdb -h 127.0.0.1 -U postgres sentry || true
+    /usr/local/opt/postgresql@9.6/bin/createuser -h 127.0.0.1 --superuser postgres || true
+    /usr/local/opt/postgresql@9.6/bin/dropdb -h 127.0.0.1 sentry || true
 }
 
 reset-db() {
