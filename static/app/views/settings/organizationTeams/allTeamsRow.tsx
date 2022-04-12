@@ -9,6 +9,7 @@ import Button from 'sentry/components/button';
 import IdBadge from 'sentry/components/idBadge';
 import Link from 'sentry/components/links/link';
 import {PanelItem} from 'sentry/components/panels';
+import {TEAM_ROLES} from 'sentry/constants';
 import {t, tct, tn} from 'sentry/locale';
 import space from 'sentry/styles/space';
 import {Organization, Team} from 'sentry/types';
@@ -166,16 +167,20 @@ class AllTeamsRow extends React.Component<Props, State> {
     // for your role + org open membership
     const canViewTeam = team.hasAccess;
 
+    // TODO(dlee): Get TEAM_ROLES from backend
+    const roleName = TEAM_ROLES.find(r => r.id === team.role)?.name;
+
     return (
       <TeamPanelItem>
-        <TeamNameWrapper>
+        <div>
           {canViewTeam ? (
             <TeamLink to={`${urlPrefix}teams/${team.slug}/`}>{display}</TeamLink>
           ) : (
             display
           )}
-        </TeamNameWrapper>
-        <Spacer>
+        </div>
+        <div>{roleName}</div>
+        <div>
           {this.state.loading ? (
             <Button size="small" disabled>
               ...
@@ -203,7 +208,7 @@ class AllTeamsRow extends React.Component<Props, State> {
               {t('Request Access')}
             </Button>
           )}
-        </Spacer>
+        </div>
       </TeamPanelItem>
     );
   }
@@ -225,14 +230,12 @@ export {AllTeamsRow};
 export default withApi(AllTeamsRow);
 
 const TeamPanelItem = styled(PanelItem)`
-  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(120px, 2fr) minmax(120px, 2fr) minmax(100px, 1fr);
+  gap: ${space(2)};
   align-items: center;
-`;
 
-const Spacer = styled('div')`
-  padding: ${space(2)};
-`;
-
-const TeamNameWrapper = styled(Spacer)`
-  flex: 1;
+  > div:last-child {
+    margin-left: auto;
+  }
 `;
