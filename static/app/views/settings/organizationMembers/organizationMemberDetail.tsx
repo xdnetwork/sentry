@@ -32,7 +32,7 @@ import AsyncView from 'sentry/views/asyncView';
 import SettingsPageHeader from 'sentry/views/settings/components/settingsPageHeader';
 import TeamSelect from 'sentry/views/settings/components/teamSelect';
 
-import RoleSelect from './inviteMember/roleSelect';
+import OrganizationRoleSelect from './inviteMember/orgRoleSelect';
 
 const MULTIPLE_ORGS = t('Cannot be reset since user is in more than one organization');
 const NOT_ENROLLED = t('Not enrolled in two-factor authentication');
@@ -240,9 +240,10 @@ class OrganizationMemberDetail extends AsyncView<Props, State> {
       return <NotFound />;
     }
 
-    const {access} = organization;
+    const {access, features} = organization;
     const inviteLink = member.invite_link;
     const canEdit = access.includes('org:write') && !this.memberDeactivated;
+    const hasTeamRoles = features.includes('team-roles');
 
     const {email, expired, pending} = member;
     const canResend = !expired;
@@ -353,8 +354,9 @@ class OrganizationMemberDetail extends AsyncView<Props, State> {
           </Panel>
         )}
 
-        <RoleSelect
-          enforceAllowed={false}
+        <OrganizationRoleSelect
+          enforceAllowed={hasTeamRoles}
+          deprecateAdmin={organization.features.includes('team-roles')}
           disabled={!canEdit}
           roleList={member.roles}
           selectedRole={member.role}
