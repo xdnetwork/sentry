@@ -15,6 +15,7 @@ const Label = styled('label')`
 `;
 
 type Props = {
+  deprecateAdmin: boolean;
   disabled: boolean;
   enforceAllowed: boolean;
   roleList: MemberRole[];
@@ -22,18 +23,27 @@ type Props = {
   setRole: (id: string) => void;
 };
 
-class RoleSelect extends Component<Props> {
+class OrganizationRoleSelect extends Component<Props> {
   render() {
-    const {disabled, enforceAllowed, roleList, selectedRole} = this.props;
+    const {disabled, deprecateAdmin, enforceAllowed, roleList, selectedRole} = this.props;
+
+    // For "organizations:team-roles"
 
     return (
       <Panel>
-        <PanelHeader>{t('Role')}</PanelHeader>
+        <PanelHeader>{t('Organization Role')}</PanelHeader>
 
         <PanelBody>
           {roleList.map(role => {
             const {desc, name, id, allowed} = role;
-            const isDisabled = disabled || (enforceAllowed && !allowed);
+
+            console.log('role', role);
+
+            const isDisabled =
+              disabled ||
+              (enforceAllowed && !allowed) ||
+              (deprecateAdmin && role.id === 'admin');
+
             return (
               <PanelItem
                 key={id}
@@ -58,4 +68,6 @@ class RoleSelect extends Component<Props> {
   }
 }
 
-export default RoleSelect;
+export default OrganizationRoleSelect;
+
+// const;

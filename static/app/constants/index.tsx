@@ -55,19 +55,19 @@ export const DEFAULT_API_ACCESS_SCOPES = [
 export const MEMBER_ROLES = [
   {
     id: 'member',
-    name: 'Member',
+    name: 'Organization Member',
     allowed: true,
     desc: 'Members can view and act on events, as well as view most other data within the organization.',
   },
   {
     id: 'admin',
     name: 'Admin',
-    allowed: true,
+    allowed: false,
     desc: "Admin privileges on any teams of which they're a member. They can create new teams and projects, as well as remove teams and projects on which they already hold membership (or all teams, if open membership is enabled). Additionally, they can manage memberships of teams that they are members of. They cannot invite members to the organization.",
   },
   {
     id: 'manager',
-    name: 'Manager',
+    name: 'Organization Manager',
     allowed: true,
     desc: 'Gains admin access on all teams as well as the ability to add and remove members.',
   },
@@ -76,6 +76,20 @@ export const MEMBER_ROLES = [
     name: 'Organization Owner',
     allowed: true,
     desc: 'Unrestricted access to the organization, its data, and its settings. Can add, modify, and delete projects and members, as well as make billing and plan changes.',
+  },
+];
+export const TEAM_ROLES = [
+  {
+    id: 'admin',
+    name: 'Team Admin',
+    allowed: true,
+    desc: 'Lorem Ipsum',
+  },
+  {
+    id: 'contributor',
+    name: 'Team Contributor',
+    allowed: true,
+    desc: 'Lorem Ipsum',
   },
 ];
 

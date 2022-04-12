@@ -70,6 +70,8 @@ export type Team = {
   isPending: boolean;
   memberCount: number;
   name: string;
+  role: string | null;
+  roleName: string | null;
   slug: string;
 };
 

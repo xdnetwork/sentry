@@ -11,7 +11,8 @@ import {TeamBadge} from 'sentry/components/idBadge/teamBadge';
 import Link from 'sentry/components/links/link';
 import LoadingIndicator from 'sentry/components/loadingIndicator';
 import {Panel, PanelBody, PanelHeader, PanelItem} from 'sentry/components/panels';
-import {DEFAULT_DEBOUNCE_DURATION} from 'sentry/constants';
+import RoleSelectControl from 'sentry/components/roleSelectControl';
+import {DEFAULT_DEBOUNCE_DURATION, TEAM_ROLES} from 'sentry/constants';
 import {IconSubtract} from 'sentry/icons';
 import {t} from 'sentry/locale';
 import space from 'sentry/styles/space';
@@ -147,23 +148,32 @@ type TeamRowProps = {
 
 const TeamRow = ({orgId, team, onRemove, disabled, confirmMessage}: TeamRowProps) => (
   <TeamPanelItem>
-    <StyledLink to={`/settings/${orgId}/teams/${team.slug}/`}>
-      <TeamBadge team={team} />
-    </StyledLink>
-    <Confirm
-      message={confirmMessage}
-      bypass={!confirmMessage}
-      onConfirm={() => onRemove(team.slug)}
-      disabled={disabled}
-    >
-      <Button
-        size="xsmall"
-        icon={<IconSubtract isCircled size="xs" />}
+    <div>
+      <Link to={`/settings/${orgId}/teams/${team.slug}/`}>
+        <TeamBadge team={team} />
+      </Link>
+    </div>
+
+    <div>
+      <RoleSelectControl disableUnallowed roles={TEAM_ROLES} value={team.role} />
+    </div>
+
+    <div>
+      <Confirm
+        message={confirmMessage}
+        bypass={!confirmMessage}
+        onConfirm={() => onRemove(team.slug)}
         disabled={disabled}
       >
-        {t('Remove')}
-      </Button>
-    </Confirm>
+        <Button
+          size="xsmall"
+          icon={<IconSubtract isCircled size="xs" />}
+          disabled={disabled}
+        >
+          {t('Remove')}
+        </Button>
+      </Confirm>
+    </div>
   </TeamPanelItem>
 );
 
@@ -174,13 +184,14 @@ const DropdownTeamBadge = styled(TeamBadge)`
 `;
 
 const TeamPanelItem = styled(PanelItem)`
-  padding: ${space(2)};
+  display: grid;
+  grid-template-columns: minmax(120px, 4fr) minmax(120px, 2fr) minmax(100px, 1fr);
+  gap: ${space(2)};
   align-items: center;
-`;
 
-const StyledLink = styled(Link)`
-  flex: 1;
-  margin-right: ${space(1)};
+  > div:last-child {
+    margin-left: auto;
+  }
 `;
 
 export default TeamSelect;

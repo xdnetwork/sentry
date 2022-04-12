@@ -2,11 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from datetime import datetime, timedelta
-<<<<<<< HEAD
 from typing import Any, Iterable, List, MutableMapping, Sequence
-=======
-from typing import Any, Iterable, List, MutableMapping, Optional, Sequence
->>>>>>> 6a8c422039 (feat(access): Introduce model and API for team-level roles)
 
 import sentry_sdk
 from django.db import connection
