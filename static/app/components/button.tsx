@@ -50,7 +50,7 @@ interface BaseButtonProps
 export interface ButtonPropsWithoutAriaLabel extends BaseButtonProps {
   children: React.ReactNode;
 }
-export interface ButtonPropsWithAriaLabel extends BaseButtonProps {
+export interface ButtonPropsWithsAriaLabel extends BaseButtonProps {
   'aria-label': string;
   children?: never;
 }
@@ -243,10 +243,6 @@ const getColors = ({
 
     ${translucentBorder && `border-width: 0;`}
 
-    &:hover {
-      color: ${color};
-    }
-
     ${size !== 'zero' &&
     `
     &:hover,
@@ -254,7 +250,6 @@ const getColors = ({
     &.focus-visible,
     &[aria-expanded="true"] {
       color: ${colorActive || color};
-      background: ${backgroundActive};
       border-color: ${borderless || priority === 'link' ? 'transparent' : borderActive};
     }`}
 
@@ -326,16 +321,20 @@ const StyledButton = styled(
       (typeof prop === 'string' && isPropValid(prop)),
   }
 )<ButtonProps>`
+  position: relative;
   display: inline-block;
   border-radius: ${p => p.theme.button.borderRadius};
   text-transform: none;
   font-weight: 600;
+  box-sizing: border-box;
   ${getColors};
   ${getSizeStyles}
   ${getBoxShadow};
   cursor: ${p => (p.disabled ? 'not-allowed' : 'pointer')};
   opacity: ${p => (p.busy || p.disabled) && '0.65'};
   transition: background 0.1s, border 0.1s, box-shadow 0.1s;
+
+  ${p => !p.disabled && p.theme.stateLayer()};
 
   ${p => p.priority === 'link' && `font-size: inherit; font-weight: inherit; padding: 0;`}
   ${p => p.size === 'zero' && `height: auto; min-height: auto; padding: ${space(0.25)};`}

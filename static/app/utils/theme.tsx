@@ -1,5 +1,4 @@
-import '@emotion/react';
-
+import {css} from '@emotion/react';
 import color from 'color';
 
 import CHART_PALETTE from 'sentry/constants/chartPalette';
@@ -564,6 +563,37 @@ const generateButtonTheme = (colors: BaseColors, alias: Aliases) => ({
   },
 });
 
+const generateUtils = (colors, aliases) => ({
+  stateLayer: (colorKey: string = 'headingColor') =>
+    css({
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: 'inherit',
+        border: 'inherit',
+        boxSizing: 'content-box',
+        opacity: 0,
+        transition: 'opacity 0.1s',
+        backgroundColor: colors[colorKey] ?? aliases[colorKey],
+        borderColor: colors[colorKey] ?? aliases[colorKey],
+      },
+      '&:hover::before': {
+        opacity: 0.05,
+      },
+      [`&:active::before, 
+        &.focus-visible::before, 
+        &[aria-expanded='true']::before, 
+        &[aria-selected='true']::before`]: {
+        opacity: 0.08,
+      },
+    }),
+});
+
 const iconSizes = {
   xs: '12px',
   sm: '16px',
@@ -817,6 +847,7 @@ export const lightTheme = {
   button: generateButtonTheme(lightColors, lightAliases),
   tag: generateTagTheme(lightColors),
   level: generateLevelTheme(lightColors),
+  ...generateUtils(lightColors, lightAliases),
   sidebar: {
     ...commonTheme.sidebar,
     background: sidebarBackground.light,
@@ -839,6 +870,7 @@ export const darkTheme: Theme = {
   button: generateButtonTheme(darkColors, darkAliases),
   tag: generateTagTheme(darkColors),
   level: generateLevelTheme(darkColors),
+  ...generateUtils(darkColors, darkAliases),
   sidebar: {
     ...commonTheme.sidebar,
     background: sidebarBackground.dark,
