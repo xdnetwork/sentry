@@ -1,5 +1,6 @@
 import DropdownControl, {DropdownItem} from 'sentry/components/dropdownControl';
 import MenuItem from 'sentry/components/menuItem';
+import DropdownMenuControlV2 from 'sentry/components/dropdownMenuControlV2';
 
 export default {
   title: 'Components/Buttons/Dropdowns/Dropdown Control',
@@ -11,23 +12,53 @@ export const BasicLabelKnobs = ({
   alignRight,
   blendWithActor,
 }) => {
+  const menuItems = [
+    {
+      key: 'sectiona',
+      label: 'Section A',
+      children: [
+        {
+          key: 'item_1',
+          label: 'Item 1',
+        },
+        {
+          key: 'item_2',
+          label: 'Item 2',
+        },
+      ],
+    },
+    {
+      key: 'sectionb',
+      label: 'Section B',
+      children: [
+        {
+          key: 'item_3',
+          label: 'Priority: Primary',
+          priority: 'primary',
+        },
+        {
+          key: 'item_4',
+          label: 'Priority: Danger',
+          priority: 'danger',
+        },
+        {
+          key: 'item_5',
+          label: 'Disabled',
+        },
+      ],
+    },
+  ];
+
   return (
     <div className="clearfix">
-      <DropdownControl
-        label="Open Me"
-        menuWidth={menuWidth}
-        alwaysRenderMenu={alwaysRenderMenu}
-        alignRight={alignRight}
-        blendWithActor={blendWithActor}
-      >
-        <DropdownItem href="">Href Item</DropdownItem>
-        <DropdownItem to="">Router Item</DropdownItem>
-        <DropdownItem disabled>Disabled Item</DropdownItem>
-        <DropdownItem divider />
-        <DropdownItem isActive href="">
-          Active Item
-        </DropdownItem>
-      </DropdownControl>
+      <DropdownMenuControlV2
+        items={menuItems}
+        triggerProps={{
+          prefix: 'Prefix',
+        }}
+        triggerLabel="Label"
+        disabledKeys={['item_5']}
+      />
     </div>
   );
 };
