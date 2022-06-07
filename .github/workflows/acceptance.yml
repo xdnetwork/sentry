@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check for backend file changes
+      - name: Check type of file changes
         uses: getsentry/paths-filter@v2
         id: changes
         with:

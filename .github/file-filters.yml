@@ -42,7 +42,7 @@ backend_dependencies: &backend_dependencies
 
 backend_build_changes: &backend_build_changes
   - '.github/actions/setup-sentry/action.yml'
-  - '.github/workflows/!(frontend)'
+  - '.github/workflows/backend.yml'
   - '.pre-commit-config.yaml'
   - 'Makefile'
   - 'pyproject.toml'
@@ -61,6 +61,7 @@ backend: &backend
 acceptance: &acceptance
   - *backend
   - *frontend
+  - '.github/workflows/acceptance.yml'
 
 plugins: &plugins
   - *backend
