@@ -330,6 +330,7 @@ jobs:
         # XXX: Run only on pushes from master; Forks are handled in visual-diff.yml
         if: github.repository == 'getsentry/sentry'
         with:
+          base-branch: 'execute-vs-on-a-branch'
           api-token: ${{ secrets.VISUAL_SNAPSHOT_SECRET }}
           gcs-bucket: 'sentry-visual-snapshots'
           gcp-service-account-key: ${{ secrets.SNAPSHOT_GOOGLE_SERVICE_ACCOUNT_KEY }}
