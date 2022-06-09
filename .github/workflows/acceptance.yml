@@ -332,7 +332,7 @@ jobs:
         id: visual-snapshots-diff
         uses: getsentry/action-visual-snapshot@run-on-branches
         # Forks are handled in visual-diff.yml
-        if: github.event.pull_request.head.repo.full_name == 'getsentry/sentry'
+        if: github.repository == 'getsentry/sentry'
         with:
           api-token: ${{ secrets.VISUAL_SNAPSHOT_SECRET }}
           gcs-bucket: 'sentry-visual-snapshots'
