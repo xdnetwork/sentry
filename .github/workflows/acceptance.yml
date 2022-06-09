@@ -11,6 +11,8 @@ on:
     branches:
       - master
       - execute-vs-on-a-branch
+  # XXX: Maybe via visual-diff.yml??
+  workflow_dispatch:
 
 jobs:
   files-changed:
@@ -311,7 +313,7 @@ jobs:
     if: always()
     # This guarantees that we will only schedule Visual Snapshots if all
     # workflows that generate artifacts succeed
-    needs: [files-changed]
+    needs: [acceptance, frontend, chartcuterie, files-changed]
     name: triggers visual snapshot
     runs-on: ubuntu-20.04
     timeout-minutes: 20
@@ -322,16 +324,10 @@ jobs:
         run: |
           echo "One of the dependent jobs have failed. You may need to re-run it." && exit 1
 
-      - name: Print github
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
-
       - name: Diff snapshots
         id: visual-snapshots-diff
         uses: getsentry/action-visual-snapshot@run-on-branches
-        # Forks are handled in visual-diff.yml
+        # XXX: Run only on pushes from master; Forks are handled in visual-diff.yml
         if: github.repository == 'getsentry/sentry'
         with:
           api-token: ${{ secrets.VISUAL_SNAPSHOT_SECRET }}
