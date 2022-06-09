@@ -100,7 +100,7 @@ jobs:
           css-path: src/sentry/static/sentry/dist/entrypoints/sentry.css
 
       - name: Save snapshots
-        uses: getsentry/action-visual-snapshot@v2
+        uses: getsentry/action-visual-snapshot@main
         with:
           save-only: true
           snapshot-path: .artifacts/visual-snapshots
@@ -232,7 +232,7 @@ jobs:
           USE_SNUBA: 1
 
       - name: Save snapshots
-        uses: getsentry/action-visual-snapshot@v2
+        uses: getsentry/action-visual-snapshot@main
         with:
           save-only: true
           snapshot-path: .artifacts/visual-snapshots
@@ -298,7 +298,7 @@ jobs:
           PYTEST_SNAPSHOTS_DIR: ${{ steps.setup.outputs.acceptance-dir }}
 
       - name: Save snapshots
-        uses: getsentry/action-visual-snapshot@v2
+        uses: getsentry/action-visual-snapshot@main
         with:
           save-only: true
           snapshot-path: .artifacts/visual-snapshots
