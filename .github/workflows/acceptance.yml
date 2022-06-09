@@ -322,11 +322,15 @@ jobs:
         run: |
           echo "One of the dependent jobs have failed. You may need to re-run it." && exit 1
 
+      - name: Print github
+        run: |
+          echo ${{ github.event }}
+
       - name: Diff snapshots
         id: visual-snapshots-diff
         uses: getsentry/action-visual-snapshot@run-on-branches
         # Forks are handled in visual-diff.yml
-        if: needs.files-changed.outputs.acceptance == 'true' && github.event.pull_request.head.repo.full_name == 'getsentry/sentry'
+        if: github.event.pull_request.head.repo.full_name == 'getsentry/sentry' || github.event.push
         with:
           api-token: ${{ secrets.VISUAL_SNAPSHOT_SECRET }}
           gcs-bucket: 'sentry-visual-snapshots'
