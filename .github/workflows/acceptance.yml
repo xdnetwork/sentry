@@ -308,7 +308,7 @@ jobs:
   #       if: needs.files-changed.outputs.backend == 'true'
 
   visual-diff:
-    if: needs.files-changed.outputs.acceptance == 'true'
+    if: always()
     # This guarantees that we will only schedule Visual Snapshots if all
     # workflows that generate artifacts succeed
     needs: [files-changed]
@@ -326,7 +326,7 @@ jobs:
         id: visual-snapshots-diff
         uses: getsentry/action-visual-snapshot@run-on-branches
         # Forks are handled in visual-diff.yml
-        if: github.event.pull_request.head.repo.full_name == 'getsentry/sentry'
+        if: needs.files-changed.outputs.acceptance == 'true' && github.event.pull_request.head.repo.full_name == 'getsentry/sentry'
         with:
           api-token: ${{ secrets.VISUAL_SNAPSHOT_SECRET }}
           gcs-bucket: 'sentry-visual-snapshots'
@@ -335,6 +335,7 @@ jobs:
   # Since Visual Snapshot is a required check we need to pretend to have run
   fake-visual-snapshot:
     name: Visual Snapshot
+    needs: [files-changed]
     # Opposite condition to "triggers visual snapshot" required check
     if: needs.files-changed.outputs.acceptance != 'true'
     runs-on: ubuntu-20.04
