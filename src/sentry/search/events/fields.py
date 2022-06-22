@@ -907,6 +907,8 @@ def get_json_meta_type(field_alias, snuba_type, function=None):
     if alias_definition and alias_definition.result_type is not None:
         return alias_definition.result_type
 
+    if "measurements.longtaskcount" in field_alias or "measurements.total.db.calls" in field_alias:
+        return "number"
     snuba_json = get_json_type(snuba_type)
     if snuba_json != "string":
         if function is not None:

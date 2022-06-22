@@ -54,6 +54,7 @@ import {
   getWidgetDiscoverUrl,
   getWidgetIssueUrl,
   getWidgetReleasesUrl,
+  isCustomMeasurementWidget,
 } from 'sentry/views/dashboardsV2/utils';
 import WidgetCardChart, {
   AugmentedEChartDataZoomHandler,
@@ -161,7 +162,8 @@ function WidgetViewerModal(props: Props) {
     totalIssuesCount,
     pageLinks: defaultPageLinks,
   } = props;
-  const shouldShowSlider = organization.features.includes('widget-viewer-modal-minimap');
+  const shouldShowSlider =
+    false && organization.features.includes('widget-viewer-modal-minimap');
   // Get widget zoom from location
   // We use the start and end query params for just the initial state
   const start = decodeScalar(location.query[WidgetViewerQueryField.START]);
@@ -940,11 +942,12 @@ function WidgetViewerModal(props: Props) {
     case WidgetType.DISCOVER:
     default:
       openLabel = t('Open in Discover');
-      path = getWidgetDiscoverUrl(
-        {...primaryWidget, queries: [primaryWidget.queries[selectedQueryIndex]]},
-        modalTableSelection,
-        organization
-      );
+      path =
+        getWidgetDiscoverUrl(
+          {...primaryWidget, queries: [primaryWidget.queries[selectedQueryIndex]]},
+          modalTableSelection,
+          organization
+        ) + '&fromMetric=true';
       break;
   }
 
@@ -979,6 +982,7 @@ function WidgetViewerModal(props: Props) {
                 to={path}
                 priority="primary"
                 type="button"
+                disabled={isCustomMeasurementWidget(widget)}
                 onClick={() => {
                   trackAdvancedAnalyticsEvent(
                     'dashboards_views.widget_viewer.open_source',

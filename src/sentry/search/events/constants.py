@@ -188,6 +188,10 @@ METRICS_MAP = {
     "spans.http": "d:transactions/breakdowns.span_ops.http@millisecond",
     "spans.resource": "d:transactions/breakdowns.span_ops.resource@millisecond",
     "transaction.duration": "d:transactions/duration@millisecond",
+    "measurements.longtaskcount": "d:transactions/measurements.longtaskcount@none",
+    "measurements.total.db.calls": "d:transactions/measurements.total.db.calls@none",
+    "measurements.issues.for_review": "d:transactions/measurements.issues.for_review@none",
+    "measurements.issues.unresolved": "d:transactions/measurements.issues.unresolved@none",
     "user": "s:transactions/user@none",
 }
 # 50 to match the size of tables in the UI + 1 for pagination reasons

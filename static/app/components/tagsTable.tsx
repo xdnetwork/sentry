@@ -41,12 +41,24 @@ const TagsTable = ({event, query, generateUrl, title = t('Tag Details')}: Props)
   const getTooltipTitle = (errors: Array<MetaError>) => {
     return <TooltipTitle>{getErrorMessage(errors[0])}</TooltipTitle>;
   };
-
+  const augmentedTags = [...tags];
+  if (event.measurements?.longtaskcount) {
+    augmentedTags.push({
+      key: 'longtaskcount',
+      value: Math.round(event.measurements?.longtaskcount.value * 100) / 100,
+    });
+  }
+  if (event.measurements?.['total.db.calls']) {
+    augmentedTags.push({
+      key: 'total.db.calls',
+      value: Math.round(event.measurements?.['total.db.calls'].value * 100) / 100,
+    });
+  }
   return (
     <StyledTagsTable>
       <SectionHeading>{title}</SectionHeading>
       <KeyValueTable>
-        {tags.map(tag => {
+        {augmentedTags.map(tag => {
           const tagInQuery = query.includes(`${tag.key}:`);
           const target = tagInQuery ? undefined : generateUrl(tag);
           const keyMetaData = getMeta(tag, 'key');

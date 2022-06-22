@@ -32,9 +32,23 @@ function measurementsFromDetails(
 
 const MOBILE_MEASUREMENTS = measurementsFromDetails(MOBILE_VITAL_DETAILS);
 const WEB_MEASUREMENTS = measurementsFromDetails(WEB_VITAL_DETAILS);
+const CUSTOM_MEASUREMENTS = measurementsFromDetails({
+  'measurements.longtaskcount': {
+    slug: 'measurements.longtaskcount',
+    name: 'measurements.longtaskcount',
+    description: 'measurements.longtaskcount',
+    type: 'number',
+  },
+  'measurements.total.db.calls': {
+    slug: 'measurements.total.db.calls',
+    name: 'measurements.total.db.calls',
+    description: 'measurements.total.db.calls',
+    type: 'number',
+  },
+} as Record<string, Vital>);
 
 export function getMeasurements() {
-  return {...WEB_MEASUREMENTS, ...MOBILE_MEASUREMENTS};
+  return {...WEB_MEASUREMENTS, ...MOBILE_MEASUREMENTS, ...CUSTOM_MEASUREMENTS};
 }
 
 type ChildrenProps = {

@@ -410,6 +410,11 @@ ALL_MEASUREMENT_METRICS = frozenset(
         "d:transactions/measurements.stall_total_time@millisecond",
         "d:transactions/measurements.ttfb@millisecond",
         "d:transactions/measurements.ttfb.requesttime@millisecond",
+        "d:transactions/measurements.my.custom.measurement@millisecond",
+        "d:transactions/measurements.longtaskcount@none",
+        "d:transactions/measurements.total.db.calls@none",
+        "d:transactions/measurements.issues.for_review@none",
+        "d:transactions/measurements.issues.unresolved@none",
     ]
 )
 
