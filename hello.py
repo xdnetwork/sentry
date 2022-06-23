@@ -1,6 +1,6 @@
-import pytz
 import datetime
 
+import pytz
 from snuba_sdk.aliased_expression import AliasedExpression
 from snuba_sdk.column import Column
 from snuba_sdk.conditions import And, BooleanCondition, Condition, Op, Or

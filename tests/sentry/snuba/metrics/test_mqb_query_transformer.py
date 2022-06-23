@@ -1,6 +1,6 @@
-import pytz
 import datetime
 
+import pytz
 from snuba_sdk.aliased_expression import AliasedExpression
 from snuba_sdk.column import Column
 from snuba_sdk.conditions import And, BooleanCondition, Condition, Op, Or
@@ -10,7 +10,6 @@ from snuba_sdk.function import CurriedFunction, Function
 from snuba_sdk.orderby import Direction, LimitBy, OrderBy
 from snuba_sdk.query import Query
 
-
 TABLE_QUERIES = [
     {
         "match": Entity("metrics_distributions"),
@@ -18,9 +17,7 @@ TABLE_QUERIES = [
             Function(
                 function="p50",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration")
-                ],
+                parameters=[Column("transaction.duration")],
                 alias="p50",
             ),
         ],
@@ -59,9 +56,7 @@ TABLE_QUERIES = [
                 exp=Function(
                     function="p50",
                     initializers=None,
-                    parameters=[
-                        "transaction.duration"
-                    ],
+                    parameters=["transaction.duration"],
                     alias="p50",
                 ),
                 direction=Direction.ASC,
@@ -121,9 +116,7 @@ TABLE_QUERIES = [
                 lhs=Function(
                     function="tuple",
                     initializers=None,
-                    parameters=[
-                        Column("transaction")
-                    ],
+                    parameters=[Column("transaction")],
                     alias=None,
                 ),
                 op=Op.IN,
@@ -146,9 +139,7 @@ TABLE_QUERIES = [
             Function(
                 function="p50",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration")
-                ],
+                parameters=[Column("transaction.duration")],
                 alias="p50_transaction_duration",
             ),
             AliasedExpression(
@@ -200,9 +191,7 @@ TABLE_QUERIES = [
             Function(
                 function="p50",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration")
-                ],
+                parameters=[Column("transaction.duration")],
                 alias="p50_transaction_duration",
             ),
         ],
@@ -250,46 +239,31 @@ TABLE_QUERIES = [
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.lcp"),
-                    "good"
-                ],
+                parameters=[Column("transaction.measurements.lcp"), "good"],
                 alias="count_web_vitals_measurements_cls_good",
             ),
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fid"),
-                    "meh"
-                ],
+                parameters=[Column("transaction.measurements.fid"), "meh"],
                 alias="count_web_vitals_measurements_fid_meh",
             ),
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transactions.measurements.fp"),
-                    "good"
-                ],
+                parameters=[Column("transactions.measurements.fp"), "good"],
                 alias="count_web_vitals_measurements_fp_good",
             ),
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.lcp"),
-                    "good"
-                ],
+                parameters=[Column("transaction.measurements.lcp"), "good"],
                 alias="count_web_vitals_measurements_lcp_good",
             ),
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fcp"),
-                    "meh"
-                ],
+                parameters=[Column("transaction.measurements.fcp"), "meh"],
                 alias="count_web_vitals_measurements_fcp_meh",
             ),
         ],
@@ -336,10 +310,7 @@ TABLE_QUERIES = [
             Function(
                 function="count_web_vitals_measurements",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.lcp"),
-                    "poor"
-                ],
+                parameters=[Column("transaction.measurements.lcp"), "poor"],
                 alias="count_web_vitals_measurements_lcp_poor",
             ),
         ],
@@ -386,9 +357,7 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration")
-                ],
+                parameters=[Column("transaction.duration")],
                 alias="p95",
             ),
             Function(
@@ -446,13 +415,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
@@ -468,9 +435,7 @@ TABLE_QUERIES = [
             Function(
                 function="p50",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p50",
             )
         ],
@@ -536,9 +501,7 @@ TABLE_QUERIES = [
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fid")
-                ],
+                parameters=[Column("transaction.measurements.fid")],
                 alias="p75_measurements_fid",
             ),
             AliasedExpression(
@@ -548,17 +511,13 @@ TABLE_QUERIES = [
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fcp")
-                ],
+                parameters=[Column("transaction.measurements.fcp")],
                 alias="p75_measurements_fcp",
             ),
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.lcp")
-                ],
+                parameters=[Column("transaction.measurements.lcp")],
                 alias="p75_measurements_lcp",
             ),
         ],
@@ -693,9 +652,7 @@ TABLE_QUERIES = [
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.cls")
-                ],
+                parameters=[Column("transaction.measurements.cls")],
                 alias="p75_measurements_cls",
             ),
             Function(
@@ -711,25 +668,19 @@ TABLE_QUERIES = [
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fid")
-                ],
+                parameters=[Column("transaction.measurements.fid")],
                 alias="p75_measurements_fid",
             ),
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.fcp")
-                ],
+                parameters=[Column("transaction.measurements.fcp")],
                 alias="p75_measurements_fcp",
             ),
             Function(
                 function="p75",
                 initializers=None,
-                parameters=[
-                    Column("transaction.measurements.lcp")
-                ],
+                parameters=[Column("transaction.measurements.lcp")],
                 alias="p75_measurements_lcp",
             ),
         ],
@@ -804,7 +755,7 @@ TABLE_QUERIES = [
                 exp=Column("transaction"),
                 alias="transaction",
             ),
-            Column("project_id")
+            Column("project_id"),
         ],
         "array_join": None,
         "where": [
@@ -832,10 +783,7 @@ TABLE_QUERIES = [
                 lhs=Function(
                     function="tuple",
                     initializers=None,
-                    parameters=[
-                        Column("transaction"),
-                        Column("project_id")
-                    ],
+                    parameters=[Column("transaction"), Column("project_id")],
                     alias=None,
                 ),
                 op=Op.IN,
@@ -914,9 +862,7 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
@@ -1001,13 +947,11 @@ TABLE_QUERIES = [
             ),
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             ),
         ],
@@ -1023,9 +967,7 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
@@ -1110,13 +1052,11 @@ TABLE_QUERIES = [
             ),
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             ),
         ],
@@ -1132,9 +1072,7 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
@@ -1219,13 +1157,11 @@ TABLE_QUERIES = [
             ),
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             ),
         ],
@@ -1241,19 +1177,13 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
                 function="rate",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration"),
-                    60,
-                    7776000
-                ],
+                parameters=[Column("transaction.duration"), 60, 7776000],
                 alias="epm",
             ),
             Function(
@@ -1274,7 +1204,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(21, 508), (21, 512)],
                 ],
@@ -1328,13 +1258,11 @@ TABLE_QUERIES = [
             ),
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             ),
         ],
@@ -1350,19 +1278,13 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
                 function="rate",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration"),
-                    60,
-                    7776000
-                ],
+                parameters=[Column("transaction.duration"), 60, 7776000],
                 alias="epm",
             ),
             Function(
@@ -1383,7 +1305,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(22, 533), (22, 537)],
                 ],
@@ -1438,13 +1360,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
@@ -1468,19 +1388,13 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
                 function="rate",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration"),
-                    60,
-                    7776000
-                ],
+                parameters=[Column("transaction.duration"), 60, 7776000],
                 alias="epm",
             ),
             Function(
@@ -1501,7 +1415,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(22, 533), (22, 537)],
                 ],
@@ -1556,13 +1470,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
@@ -1578,19 +1490,13 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
                 function="rate",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration"),
-                    60,
-                    7776000
-                ],
+                parameters=[Column("transaction.duration"), 60, 7776000],
                 alias="epm",
             ),
             Function(
@@ -1611,7 +1517,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(22, 533), (22, 537)],
                 ],
@@ -1666,13 +1572,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
@@ -1696,19 +1600,13 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
                 function="rate",
                 initializers=None,
-                parameters=[
-                    Column("transaction.duration"),
-                    60,
-                    7776000
-                ],
+                parameters=[Column("transaction.duration"), 60, 7776000],
                 alias="epm",
             ),
             Function(
@@ -1729,7 +1627,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(22, 533), (22, 537)],
                 ],
@@ -1784,13 +1682,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
@@ -1806,9 +1702,7 @@ TABLE_QUERIES = [
             Function(
                 function="p50",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p50",
             ),
         ],
@@ -1863,9 +1757,7 @@ TABLE_QUERIES = [
             Function(
                 function="p95",
                 initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
+                parameters=["transaction.duration"],
                 alias="p95",
             ),
             Function(
@@ -1896,7 +1788,7 @@ TABLE_QUERIES = [
                 parameters=[
                     (
                         Column(name="project_id", entity=None, subscriptable=None, key=None),
-                        Column("transaction")
+                        Column("transaction"),
                     ),
                     [(24, 592)],
                 ],
@@ -1935,13 +1827,11 @@ TABLE_QUERIES = [
         "orderby": [
             OrderBy(
                 exp=Function(
-                function="p95",
-                initializers=None,
-                parameters=[
-                    "transaction.duration"
-                ],
-                alias="p95",
-            ),
+                    function="p95",
+                    initializers=None,
+                    parameters=["transaction.duration"],
+                    alias="p95",
+                ),
                 direction=Direction.ASC,
             )
         ],
