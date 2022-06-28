@@ -44,14 +44,14 @@ describe('TeamCreate', function () {
       'new-team'
     );
     userEvent.click(screen.getByText('Create Team'));
-    await waitFor(() =>
-      expect(createTeamMock).toHaveBeenCalledWith(
-        '/organizations/org-slug/teams/',
-        expect.objectContaining({
-          data: {slug: 'new-team'},
-        })
-      )
+    expect(createTeamMock).toHaveBeenCalledWith(
+      '/organizations/org-slug/teams/',
+      expect.objectContaining({
+        data: {slug: 'new-team'},
+      })
     );
-    expect(router.push).toHaveBeenCalledWith('/settings/org-slug/teams/new-team/');
+    await waitFor(() =>
+      expect(router.push).toHaveBeenCalledWith('/settings/org-slug/teams/new-team/')
+    );
   });
 });
