@@ -30,8 +30,11 @@ function CreateTeamForm({organization, formProps, ...props}: Props) {
         submitLabel={t('Create Team')}
         apiEndpoint={`/organizations/${organization.slug}/teams/`}
         apiMethod="POST"
-        onSubmit={(data, onSuccess, onError) =>
-          props.onSubmit?.(data as Payload, onSuccess, onError)
+        onSubmit={
+          props.onSubmit
+            ? (data, onSuccess, onError) =>
+                props.onSubmit?.(data as Payload, onSuccess, onError)
+            : undefined
         }
         onSubmitSuccess={data => props.onSuccess?.(data)}
         requireChanges

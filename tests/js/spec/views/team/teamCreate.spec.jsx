@@ -1,61 +1,57 @@
-import {mountWithTheme, shallow} from 'sentry-test/enzyme';
 import {initializeOrg} from 'sentry-test/initializeOrg';
+import {render, screen, userEvent, waitFor} from 'sentry-test/reactTestingLibrary';
 
 import {TeamCreate} from 'sentry/views/teamCreate';
 
 describe('TeamCreate', function () {
-  describe('render()', function () {
-    it('renders correctly', function () {
-      const {organization, routerContext} = initializeOrg();
-      const wrapper = mountWithTheme(
-        <TeamCreate
-          organization={organization}
-          params={{
-            orgId: 'org',
-          }}
-        />,
-        routerContext
-      );
-      expect(wrapper).toSnapshot();
-    });
+  afterEach(function () {
+    MockApiClient.clearMockResponses();
   });
 
-  describe('handleSubmitSuccess()', function () {
-    let wrapper;
-    const redirectMock = jest.fn();
+  it('renders correctly', function () {
+    const {organization, routerContext} = initializeOrg();
+    const wrapper = render(
+      <TeamCreate
+        organization={organization}
+        params={{
+          orgId: organization.slug,
+        }}
+      />,
+      {context: routerContext}
+    );
+    expect(wrapper.container).toSnapshot();
+  });
 
-    beforeEach(function () {
-      redirectMock.mockReset();
-      wrapper = shallow(
-        <TeamCreate
-          router={{
-            push: redirectMock,
-          }}
-          params={{
-            orgId: 'org',
-          }}
-        />,
-        {
-          context: {
-            router: TestStubs.router(),
-            organization: {
-              id: '1337',
-            },
-          },
-        }
-      );
+  it('redirects to team settings on submit', async function () {
+    const {organization, routerContext, router} = initializeOrg();
+    const createTeamMock = MockApiClient.addMockResponse({
+      url: `/organizations/${organization.slug}/teams/`,
+      method: 'POST',
+      body: {slug: 'new-team'},
     });
-
-    it('redirects to team settings', function () {
-      wrapper.setContext({
-        organization: {
-          id: '1337',
-        },
-      });
-      wrapper.instance().handleSubmitSuccess({
-        slug: 'new-team',
-      });
-      expect(redirectMock).toHaveBeenCalledWith('/settings/org/teams/new-team/');
-    });
+    render(
+      <TeamCreate
+        organization={organization}
+        params={{
+          orgId: organization.slug,
+        }}
+        router={router}
+      />,
+      {context: routerContext}
+    );
+    userEvent.type(
+      screen.getByPlaceholderText('e.g. operations, web-frontend, desktop'),
+      'new-team'
+    );
+    userEvent.click(screen.getByText('Create Team'));
+    await waitFor(() =>
+      expect(createTeamMock).toHaveBeenCalledWith(
+        '/organizations/org-slug/teams/',
+        expect.objectContaining({
+          data: {slug: 'new-team'},
+        })
+      )
+    );
+    expect(router.push).toHaveBeenCalledWith('/settings/org-slug/teams/new-team/');
   });
 });
