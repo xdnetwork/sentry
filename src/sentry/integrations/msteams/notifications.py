@@ -59,15 +59,15 @@ def send_notification_as_msteams(
 
         for recipient, integrations_by_channel in data.items():
             with sentry_sdk.start_span(op="notification.send_msteams", description="send_one"):
-                with sentry_sdk.start_span(
-                    op="notification.send_msteams", description="gen_attachments"
-                ):
-                    pass
-
                 extra_context = (extra_context_by_actor_id or {}).get(recipient.id, {})
                 context = get_context(notification, recipient, shared_context, extra_context)
 
-                card = MSTeamsNotificationsMessageBuilder(notification, context, recipient).build()
+                with sentry_sdk.start_span(
+                    op="notification.send_msteams", description="gen_attachments"
+                ):
+                    card = MSTeamsNotificationsMessageBuilder(
+                        notification, context, recipient
+                    ).build()
 
                 for channel, integration in integrations_by_channel.items():
                     client = MsTeamsClient(integration)
