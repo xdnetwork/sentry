@@ -3,6 +3,8 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Any, Iterable, Mapping, MutableMapping
 
+from django.db.models import F
+
 from sentry.constants import ObjectStatus
 from sentry.models import ExternalActor, Identity, Integration, Organization, Team, User
 from sentry.notifications.notifications.base import BaseNotification
@@ -26,10 +28,16 @@ def get_channel_and_integration_by_user(
     user: User, organization: Organization, provider: ExternalProviders
 ) -> Mapping[str, Integration]:
 
-    identities = Identity.objects.filter(
-        idp__type=EXTERNAL_PROVIDERS[provider],
-        user=user.id,
-    ).select_related("idp")
+    identities = (
+        Identity.objects.filter(
+            idp__type=EXTERNAL_PROVIDERS[provider],
+            user=user.id,
+        )
+        # For Microsoft Teams integration, initially we create rows in the
+        # identity table with the external_id as a team_id instead of the user_id.
+        # In cases where this is not updated to the user_id later, this helps exclude teams.
+        .exclude(external_id=F("idp__external_id")).select_related("idp")
+    )
 
     if not identities:
         # The user may not have linked their identity so just move on
