@@ -7,7 +7,7 @@ import {parseSearch} from 'sentry/components/searchSyntax/parser';
 import HighlightQuery from 'sentry/components/searchSyntax/renderer';
 import {t, tct} from 'sentry/locale';
 import space from 'sentry/styles/space';
-import {FieldValueKind} from 'sentry/views/eventsV2/table/types';
+import {FieldKind} from 'sentry/utils/fields';
 
 import Button from '../button';
 import HotkeysLabel from '../hotkeysLabel';
@@ -39,8 +39,7 @@ class SearchDropdown extends PureComponent<Props> {
 
     const fullWord = item.title;
 
-    const words =
-      item.kind !== FieldValueKind.FUNCTION ? fullWord.split('.') : [fullWord];
+    const words = item.kind !== FieldKind.FUNCTION ? fullWord.split('.') : [fullWord];
     const [firstWord, ...restWords] = words;
     const isFirstWordHidden = isChild;
 
@@ -193,30 +192,30 @@ class SearchDropdown extends PureComponent<Props> {
     );
   };
 
-  renderKind(kind: FieldValueKind) {
+  renderKind(kind: FieldKind) {
     let text, tagType;
     switch (kind) {
-      case FieldValueKind.FUNCTION:
+      case FieldKind.FUNCTION:
         text = 'f(x)';
         tagType = 'success';
         break;
-      case FieldValueKind.MEASUREMENT:
+      case FieldKind.MEASUREMENT:
         text = 'field';
         tagType = 'highlight';
         break;
-      case FieldValueKind.BREAKDOWN:
+      case FieldKind.BREAKDOWN:
         text = 'field';
         tagType = 'highlight';
         break;
-      case FieldValueKind.TAG:
+      case FieldKind.TAG:
         text = kind;
         tagType = 'warning';
         break;
-      case FieldValueKind.NUMERIC_METRICS:
+      case FieldKind.NUMERIC_METRICS:
         text = 'f(x)';
         tagType = 'success';
         break;
-      case FieldValueKind.FIELD:
+      case FieldKind.FIELD:
       default:
         text = kind;
     }
