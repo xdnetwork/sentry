@@ -31,6 +31,8 @@ from sentry.utils import json
 from sentry.utils.dates import to_timestamp
 from sentry.utils.http import absolute_uri
 
+from .base.base import URL_FORMAT_STR
+
 STATUSES = {"resolved": "resolved", "ignored": "ignored", "unresolved": "re-opened"}
 
 
@@ -344,7 +346,11 @@ class SlackIssuesMessageBuilder(SlackMessageBuilder):
         color = get_color(event_for_tags, self.notification)
         fields = build_tag_fields(event_for_tags, self.tags)
         footer = (
-            self.notification.build_notification_footer(self.recipient)
+            self.notification.build_notification_footer(
+                recipient=self.recipient,
+                provider=ExternalProviders.SLACK,
+                url_format_str=URL_FORMAT_STR,
+            )
             if self.notification and self.recipient
             else build_footer(self.group, project, self.rules)
         )
@@ -415,7 +421,11 @@ class SlackReleaseIssuesMessageBuilder(SlackMessageBuilder):
         color = get_color(event_for_tags, self.notification)
         fields = build_tag_fields(event_for_tags, self.tags)
         footer = (
-            self.notification.build_notification_footer(self.recipient)
+            self.notification.build_notification_footer(
+                recipient=self.recipient,
+                provider=ExternalProviders.SLACK,
+                url_format_str=URL_FORMAT_STR,
+            )
             if self.notification and self.recipient
             else build_footer(self.group, project, self.rules)
         )

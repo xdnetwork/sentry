@@ -3,9 +3,10 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 from sentry.integrations.slack.message_builder import SlackBody
-from sentry.integrations.slack.message_builder.base.base import SlackMessageBuilder
+from sentry.integrations.slack.message_builder.base.base import URL_FORMAT_STR, SlackMessageBuilder
 from sentry.models import Team, User
 from sentry.notifications.notifications.base import BaseNotification
+from sentry.types.integrations import ExternalProviders
 from sentry.utils import json
 
 
@@ -27,7 +28,11 @@ class SlackNotificationsMessageBuilder(SlackMessageBuilder):
             title=self.notification.build_attachment_title(self.recipient),
             title_link=self.notification.get_title_link(self.recipient),
             text=self.notification.get_message_description(self.recipient),
-            footer=self.notification.build_notification_footer(self.recipient),
+            footer=self.notification.build_notification_footer(
+                recipient=self.recipient,
+                provider=ExternalProviders.SLACK,
+                url_format_str=URL_FORMAT_STR,
+            ),
             actions=self.notification.get_message_actions(self.recipient),
             callback_id=json.dumps(callback_id_raw) if callback_id_raw else None,
         )

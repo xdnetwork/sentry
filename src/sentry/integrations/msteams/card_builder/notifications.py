@@ -6,6 +6,9 @@ from sentry.integrations.msteams.card_builder.base.base import MSTeamsMessageBui
 from sentry.integrations.notifications import NotificationMessageBuilderMixin
 from sentry.models import Team, User
 from sentry.notifications.notifications.base import BaseNotification
+from sentry.types.integrations import ExternalProviders
+
+from .base.base import URL_FORMAT_STR
 
 
 class MSTeamsNotificationsMessageBuilder(NotificationMessageBuilderMixin, MSTeamsMessageBuilder):
@@ -27,21 +30,26 @@ class MSTeamsNotificationsMessageBuilder(NotificationMessageBuilderMixin, MSTeam
             self.notification.get_notification_title(self.context), TextSize.LARGE
         )
         text = self.get_text_block(
-            self.get_formatted_url(
-                self.build_attachment_title(group),
-                self.get_title_link(group, None, False, True, self.notification),
-            ),
+            URL_FORMAT_STR.format(
+                text=self.build_attachment_title(group),
+                url=self.get_title_link(group, None, False, True, self.notification),
+            )
         )
 
         fields = [self.get_text_block(self.notification.get_message_description(self.recipient))]
 
-        footer = self.get_text_block(self.notification.build_notification_footer(self.recipient))
+        footer = self.get_text_block(
+            self.notification.build_notification_footer(
+                recipient=self.recipient,
+                provider=ExternalProviders.MSTEAMS,
+                url_format_str=URL_FORMAT_STR,
+            )
+        )
 
         return self._build(
             title=title,
             text=text,
             fields=fields,
-            # TODO: Varun fix referrer for different external providers.
             footer=footer,
             # TODO: Varun fix color
             color="info",

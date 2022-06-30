@@ -42,14 +42,20 @@ class OrganizationRequestNotification(BaseNotification, abc.ABC):
         # purposely use empty string for the notification title
         return ""
 
-    def build_notification_footer(self, recipient: Team | User) -> str:
+    def build_notification_footer(
+        self, recipient: Team | User, provider: ExternalProviders, url_format_str: str
+    ) -> str:
         if isinstance(recipient, Team):
             raise NotImplementedError
 
-        # notification footer only used for Slack for now
-        settings_url = self.get_settings_url(recipient, ExternalProviders.SLACK)
-        return self.role_based_recipient_strategy.build_notification_footer_from_settings_url(
-            settings_url, recipient
+        recipient_role_string = self.role_based_recipient_strategy.get_recipient_role_string(
+            recipient
+        )
+        settings_url = self.get_settings_url(recipient, provider)
+
+        return (
+            "You are receiving this notification because you're listed as an organization "
+            f"{recipient_role_string} | {url_format_str.format(text='Notification Settings', url=settings_url)}"
         )
 
     def get_title_link(self, recipient: Team | User) -> str | None:

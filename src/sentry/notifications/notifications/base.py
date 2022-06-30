@@ -90,7 +90,9 @@ class BaseNotification(abc.ABC):
     def build_attachment_title(self, recipient: Team | User) -> str:
         raise NotImplementedError
 
-    def build_notification_footer(self, recipient: Team | User) -> str:
+    def build_notification_footer(
+        self, recipient: Team | User, provider: ExternalProviders, url_format_str: str
+    ) -> str:
         raise NotImplementedError
 
     def get_message_description(self, recipient: Team | User) -> Any:
@@ -233,9 +235,11 @@ class ProjectNotification(BaseNotification, abc.ABC):
     def get_log_params(self, recipient: Team | User) -> Mapping[str, Any]:
         return {"project_id": self.project.id, **super().get_log_params(recipient)}
 
-    def build_notification_footer(self, recipient: Team | User) -> str:
+    def build_notification_footer(
+        self, recipient: Team | User, provider: ExternalProviders, url_format_str: str
+    ) -> str:
         # notification footer only used for Slack for now
-        settings_url = self.get_settings_url(recipient, ExternalProviders.SLACK)
+        settings_url = self.get_settings_url(recipient, provider)
 
         parent = getattr(self, "project", self.organization)
         footer: str = parent.slug
@@ -249,5 +253,6 @@ class ProjectNotification(BaseNotification, abc.ABC):
                 pass
         if environment and getattr(environment, "name", None) != "":
             footer += f" | {environment.name}"
-        footer += f" | <{settings_url}|Notification Settings>"
+
+        footer += f" | {url_format_str.format(text='Notification Settings', url=settings_url)}"
         return footer

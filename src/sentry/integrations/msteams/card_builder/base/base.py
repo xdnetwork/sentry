@@ -6,6 +6,8 @@ from sentry.integrations.notifications import AbstractMessageBuilder
 from sentry.templatetags.sentry_helpers import absolute_uri
 from sentry.utils.assets import get_asset_url
 
+URL_FORMAT_STR = "[{text}]({url})"
+
 
 class TextSize(Enum):
     SMALL = "Small"
@@ -51,10 +53,6 @@ class MSTeamsMessageBuilder(AbstractMessageBuilder, ABC):
                 {"type": "Column", "items": [column], "width": "auto"} for column in columns
             ],
         }
-
-    @staticmethod
-    def get_formatted_url(text: str, url: str) -> str:
-        return f"[{text}]({url})"
 
     def _build(
         self,
