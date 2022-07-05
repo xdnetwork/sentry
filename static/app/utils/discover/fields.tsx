@@ -9,7 +9,14 @@ import {
   SESSIONS_OPERATIONS,
 } from 'sentry/views/dashboardsV2/widgetBuilder/releaseWidget/fields';
 
-import {DISCOVER_FIELDS, FieldKey, FIELDS, MobileVital, WebVital} from '../fields';
+import {
+  DISCOVER_FIELDS,
+  FieldKey,
+  FIELDS,
+  FieldValueType,
+  MEASUREMENT_FIELDS,
+  WebVital,
+} from '../fields';
 
 export type Sort = {
   field: string;
@@ -591,28 +598,11 @@ export function formatTagKey(key: string): string {
 // Allows for a less strict field key definition in cases we are returning custom strings as fields
 export type LooseFieldKey = FieldKey | string | '';
 
-export type MeasurementType = 'duration' | 'number' | 'integer' | 'percentage';
-
-const MEASUREMENTS: Readonly<Record<WebVital | MobileVital, MeasurementType>> = {
-  [WebVital.FP]: 'duration',
-  [WebVital.FCP]: 'duration',
-  [WebVital.LCP]: 'duration',
-  [WebVital.FID]: 'duration',
-  [WebVital.CLS]: 'number',
-  [WebVital.TTFB]: 'duration',
-  [WebVital.RequestTime]: 'duration',
-  [MobileVital.AppStartCold]: 'duration',
-  [MobileVital.AppStartWarm]: 'duration',
-  [MobileVital.FramesTotal]: 'integer',
-  [MobileVital.FramesSlow]: 'integer',
-  [MobileVital.FramesFrozen]: 'integer',
-  [MobileVital.FramesSlowRate]: 'percentage',
-  [MobileVital.FramesFrozenRate]: 'percentage',
-  [MobileVital.StallCount]: 'integer',
-  [MobileVital.StallTotalTime]: 'duration',
-  [MobileVital.StallLongestTime]: 'duration',
-  [MobileVital.StallPercentage]: 'percentage',
-};
+export type MeasurementType =
+  | FieldValueType.DURATION
+  | FieldValueType.NUMBER
+  | FieldValueType.INTEGER
+  | FieldValueType.PERCENTAGE;
 
 export function isSpanOperationBreakdownField(field: string) {
   return field.startsWith('spans.');
@@ -652,7 +642,7 @@ export const TRACING_FIELDS = [
   'eps',
   'epm',
   'team_key_transaction',
-  ...Object.keys(MEASUREMENTS),
+  ...Object.keys(MEASUREMENT_FIELDS),
   ...SPAN_OP_BREAKDOWN_FIELDS,
   SPAN_OP_RELATIVE_BREAKDOWN_FIELD,
 ];
@@ -666,10 +656,11 @@ export function isMeasurement(field: string): boolean {
 }
 
 export function measurementType(field: string): MeasurementType {
-  if (MEASUREMENTS.hasOwnProperty(field)) {
-    return MEASUREMENTS[field];
+  if (MEASUREMENT_FIELDS.hasOwnProperty(field)) {
+    return MEASUREMENT_FIELDS[field].valueType as MeasurementType;
   }
-  return 'number';
+
+  return FieldValueType.NUMBER;
 }
 
 export function getMeasurementSlug(field: string): string | null {
