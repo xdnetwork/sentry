@@ -17,6 +17,10 @@ export type Authenticator = {
    */
   allowMultiEnrollment: boolean;
   /**
+   * Do we allow new enrollments for this 2fa interface
+   */
+  allowNewEnrollment: boolean;
+  /**
    * Allows authenticator's secret to be rotated without disabling
    */
   allowRotationInPlace: boolean;

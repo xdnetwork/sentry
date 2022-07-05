@@ -136,6 +136,7 @@ class AccountSecurity extends AsyncView<Props> {
                   description,
                   isBackupInterface,
                   isEnrolled,
+                  allowNewEnrollment,
                   configureButton,
                   name,
                 } = auth;
@@ -148,16 +149,19 @@ class AccountSecurity extends AsyncView<Props> {
                       </AuthenticatorTitle>
 
                       <Actions>
-                        {!isBackupInterface && !isEnrolled && hasVerifiedEmail && (
-                          <Button
-                            to={`/settings/account/security/mfa/${id}/enroll/`}
-                            size="small"
-                            priority="primary"
-                            className="enroll-button"
-                          >
-                            {t('Add')}
-                          </Button>
-                        )}
+                        {!isBackupInterface &&
+                          !isEnrolled &&
+                          allowNewEnrollment &&
+                          hasVerifiedEmail && (
+                            <Button
+                              to={`/settings/account/security/mfa/${id}/enroll/`}
+                              size="small"
+                              priority="primary"
+                              className="enroll-button"
+                            >
+                              {t('Add')}
+                            </Button>
+                          )}
                         {!isBackupInterface && !isEnrolled && !hasVerifiedEmail && (
                           <Button
                             onClick={this.handleAdd2FAClicked}
