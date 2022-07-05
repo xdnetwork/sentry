@@ -3,6 +3,7 @@ from hashlib import md5
 
 from django.utils.translation import ugettext_lazy as _
 
+from sentry import options
 from sentry.app import ratelimiter
 from sentry.utils.decorators import classproperty
 from sentry.utils.otp import TOTP
@@ -34,6 +35,7 @@ class SmsInterface(OtpMixin, AuthenticatorInterface):
         "an authenticator application."
     )
     code_ttl = 45
+    allow_new_enrollment = bool(options.get("sms.allow-new-enrollment"))
 
     @classproperty
     def is_available(cls):

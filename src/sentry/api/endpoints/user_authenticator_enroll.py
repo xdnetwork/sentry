@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 ALREADY_ENROLLED_ERR = {"details": "Already enrolled"}
 INVALID_OTP_ERR = ({"details": "Invalid OTP"},)
 SEND_SMS_ERR = {"details": "Error sending SMS"}
+DEPRECATED_ERR = {"details": "2FA method is deprecated"}
 
 
 class TotpRestSerializer(serializers.Serializer):
@@ -184,6 +185,12 @@ class UserAuthenticatorEnrollEndpoint(UserEndpoint):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         interface = Authenticator.objects.get_interface(request.user, interface_id)
+
+        # Check if the 2FA interface allows new enrollment, if not we should error
+        # on any POSTs
+        # TODO(mdtro): Is a 503 the right return code here?
+        if not interface.allow_new_enrollment:
+            return Response(DEPRECATED_ERR, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # Not all interfaces allow multi enrollment
         #
