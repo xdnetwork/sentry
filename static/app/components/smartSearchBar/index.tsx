@@ -164,10 +164,6 @@ type Props = WithRouterProps & {
    */
   excludeEnvironment?: boolean;
   /**
-   * A function to get documentation for a field
-   */
-  getFieldDoc?: (key: string) => React.ReactNode;
-  /**
    * List user's recent searches
    */
   hasRecentSearches?: boolean;
