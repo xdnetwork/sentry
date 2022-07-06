@@ -348,7 +348,10 @@ export const getTagItemsFromKeys = (
     .reduce((groups, key) => {
       const keyWithColon = `${key}:`;
       const sections = key.split('.');
-      const definition = getFieldDefinition(key);
+      const definition =
+        supportedTags[key]?.kind === FieldKind.FUNCTION
+          ? getFieldDefinition(key.split('(')[0])
+          : getFieldDefinition(key);
       const kind = supportedTags[key]?.kind ?? definition?.kind ?? FieldKind.FIELD;
 
       const item: SearchItem = {
