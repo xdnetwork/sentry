@@ -4,9 +4,16 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-from sentry.db.models import EncryptedJsonField, FlexibleForeignKey, Model, sane_repr
+from sentry.db.models import (
+    EncryptedJsonField,
+    FlexibleForeignKey,
+    Model,
+    control_silo_model,
+    sane_repr,
+)
 
 
+@control_silo_model
 class AuthIdentity(Model):
     __include_in_export__ = True
 

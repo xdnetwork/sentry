@@ -4,7 +4,12 @@ from typing import Any, Sequence
 from django.db import IntegrityError, models
 
 from sentry.constants import ObjectStatus
-from sentry.db.models import BoundedPositiveIntegerField, DefaultFieldsModel, EncryptedJsonField
+from sentry.db.models import (
+    BoundedPositiveIntegerField,
+    DefaultFieldsModel,
+    EncryptedJsonField,
+    customer_silo_model,
+)
 from sentry.db.models.manager import BaseManager
 from sentry.models.integrations.organization_integration import OrganizationIntegration
 from sentry.models.integrations.project_integration import ProjectIntegration
@@ -22,6 +27,7 @@ class IntegrationManager(BaseManager):
         )
 
 
+@customer_silo_model
 class Integration(DefaultFieldsModel):
     __include_in_export__ = False
 

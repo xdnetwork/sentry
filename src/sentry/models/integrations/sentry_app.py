@@ -21,6 +21,7 @@ from sentry.db.models import (
     FlexibleForeignKey,
     ParanoidManager,
     ParanoidModel,
+    customer_silo_model,
 )
 from sentry.models.apiscopes import HasApiScopes
 from sentry.utils import metrics
@@ -103,6 +104,7 @@ class SentryAppManager(ParanoidManager):
         return self.filter(status=SentryAppStatus.PUBLISHED)
 
 
+@customer_silo_model
 class SentryApp(ParanoidModel, HasApiScopes):
     __include_in_export__ = True
 

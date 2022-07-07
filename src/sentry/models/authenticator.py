@@ -17,6 +17,7 @@ from sentry.db.models import (
     BoundedPositiveIntegerField,
     EncryptedPickledObjectField,
     FlexibleForeignKey,
+    control_silo_model,
 )
 
 
@@ -111,6 +112,7 @@ class AuthenticatorManager(BaseManager):
         return {id: id in authenticators for id in user_ids}
 
 
+@control_silo_model
 class Authenticator(BaseModel):
     __include_in_export__ = True
 

@@ -10,6 +10,7 @@ from sentry.db.models import (
     EncryptedJsonField,
     FlexibleForeignKey,
     Model,
+    control_silo_model,
     sane_repr,
 )
 
@@ -22,6 +23,7 @@ SCIM_INTERNAL_INTEGRATION_OVERVIEW = (
 )
 
 
+@control_silo_model
 class AuthProvider(Model):
     __include_in_export__ = True
 

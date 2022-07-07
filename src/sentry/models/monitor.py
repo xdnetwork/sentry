@@ -14,6 +14,7 @@ from sentry.db.models import (
     EncryptedJsonField,
     Model,
     UUIDField,
+    customer_silo_model,
     sane_repr,
 )
 
@@ -122,6 +123,7 @@ class ScheduleType:
         return dict(cls.as_choices())[value]
 
 
+@customer_silo_model
 class Monitor(Model):
     __include_in_export__ = True
 

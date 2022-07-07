@@ -19,7 +19,13 @@ from structlog import get_logger
 
 from bitfield import BitField
 from sentry import features
-from sentry.db.models import BoundedPositiveIntegerField, FlexibleForeignKey, Model, sane_repr
+from sentry.db.models import (
+    BoundedPositiveIntegerField,
+    FlexibleForeignKey,
+    Model,
+    customer_silo_model,
+    sane_repr,
+)
 from sentry.db.models.manager import BaseManager
 from sentry.exceptions import UnableToAcceptMemberInvitationException
 from sentry.models.team import TeamStatus
@@ -91,6 +97,7 @@ class OrganizationMemberManager(BaseManager):
         return user_teams
 
 
+@customer_silo_model
 class OrganizationMember(Model):
     """
     Identifies relationships between organizations and users.

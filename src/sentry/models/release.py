@@ -26,6 +26,7 @@ from sentry.db.models import (
     FlexibleForeignKey,
     JSONField,
     Model,
+    customer_silo_model,
     sane_repr,
 )
 from sentry.exceptions import InvalidSearchQuery
@@ -66,6 +67,7 @@ class ReleaseCommitError(Exception):
     pass
 
 
+@customer_silo_model
 class ReleaseProject(Model):
     __include_in_export__ = False
 

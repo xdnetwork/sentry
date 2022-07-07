@@ -6,9 +6,11 @@ from sentry.db.models import (
     DefaultFieldsModel,
     EncryptedJsonField,
     FlexibleForeignKey,
+    customer_silo_model,
 )
 
 
+@customer_silo_model
 class OrganizationIntegration(DefaultFieldsModel):
     __include_in_export__ = False
 
