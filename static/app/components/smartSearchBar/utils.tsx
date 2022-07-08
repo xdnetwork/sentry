@@ -436,3 +436,20 @@ export const setSearchGroupItemActive = (
     });
   });
 };
+
+export const filterKeysFromQuery = (tagKeys: string[], query: string): string[] => {
+  const queryWords = query.split(/[\. -]/g);
+
+  return tagKeys.filter(key => {
+    const definition = getFieldDefinition(key);
+
+    const keyWords = [key, definition?.desc ?? '', ...(definition?.keywords ?? [])].join(
+      ' '
+    );
+
+    const totalWordCount = queryWords.length;
+    const matchingWords = queryWords.filter(word => keyWords.includes(word)).length;
+
+    return matchingWords / totalWordCount > 0.75;
+  });
+};

@@ -50,6 +50,7 @@ import {ItemType, SearchGroup, SearchItem, Shortcut, ShortcutType} from './types
 import {
   addSpace,
   createSearchGroups,
+  filterKeysFromQuery,
   generateOperatorEntryMap,
   getTagItemsFromKeys,
   getValidOps,
@@ -883,9 +884,9 @@ class SmartSearchBar extends Component<Props, State> {
     let tagKeys = Object.keys(supportedTags);
 
     if (query) {
-      const preparedQuery =
-        typeof prepareQuery === 'function' ? prepareQuery(query) : query;
-      tagKeys = tagKeys.filter(key => key.indexOf(preparedQuery) > -1);
+      const preparedQuery = prepareQuery ? prepareQuery(query) : query;
+
+      tagKeys = filterKeysFromQuery(tagKeys, preparedQuery);
     }
 
     // If the environment feature is active and excludeEnvironment = true
@@ -1239,8 +1240,9 @@ class SmartSearchBar extends Component<Props, State> {
     }
 
     if (cursorToken.type === Token.FreeText) {
-      const lastToken = cursorToken.text.trim().split(' ').pop() ?? '';
-      const keyText = lastToken.replace(new RegExp(`^${NEGATION_OPERATOR}`), '');
+      const keyText = this.state.query
+        .slice(this.filterTokens.at(-1)?.location.end.offset ?? 0)
+        .replace(new RegExp(`^${NEGATION_OPERATOR}`), '');
       const autocompleteGroups = [await this.generateTagAutocompleteGroup(keyText)];
       this.setState({searchTerm: keyText});
       this.updateAutoCompleteStateMultiHeader(autocompleteGroups);

@@ -161,6 +161,7 @@ export interface FieldDefinition {
   kind: FieldKind;
   valueType: FieldValueType;
   desc?: string;
+  keywords?: string[];
 }
 
 export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
@@ -696,6 +697,7 @@ export const FIELDS: Record<string, FieldDefinition> = {
     desc: 'Total number of events',
     kind: FieldKind.FIELD,
     valueType: FieldValueType.STRING,
+    keywords: ['how', 'many', 'count'],
   },
   [FieldKey.TIMESTAMP]: {
     desc: 'The time an event finishes',
