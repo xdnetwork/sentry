@@ -185,6 +185,7 @@ export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
     valueType: FieldValueType.NUMBER,
   },
   [AggregationFields.CountWebVitals]: {
+    desc: 'Returns count of web vitals with a specific status',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NUMBER,
   },
@@ -197,6 +198,10 @@ export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
     desc: 'Returns events per minute',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NUMBER,
+  },
+  [AggregationFields.FailureRate]: {
+    kind: FieldKind.FUNCTION,
+    valueType: FieldValueType.PERCENTAGE,
   },
   [AggregationFields.FailureCount]: {
     desc: 'Returns failed event count based on transaction.status',
@@ -261,6 +266,10 @@ export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
     desc: 'Returns transactions of miserable users between 0 to 1',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
+  },
+  [AggregationFields.LastSeen]: {
+    kind: FieldKind.FUNCTION,
+    valueType: FieldValueType.DATE,
   },
 };
 
