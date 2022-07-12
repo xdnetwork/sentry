@@ -7,12 +7,12 @@ from bitfield import BitField
 from sentry import options
 from sentry.db.models import (
     BoundedPositiveIntegerField,
-    EncryptedJsonField,
     FlexibleForeignKey,
     Model,
     control_silo_model,
     sane_repr,
 )
+from sentry.db.models.fields.jsonfield import JSONField
 
 logger = logging.getLogger("sentry.authprovider")
 
@@ -29,7 +29,7 @@ class AuthProvider(Model):
 
     organization = FlexibleForeignKey("sentry.Organization", unique=True)
     provider = models.CharField(max_length=128)
-    config = EncryptedJsonField()
+    config = JSONField()
 
     date_added = models.DateTimeField(default=timezone.now)
     sync_time = BoundedPositiveIntegerField(null=True)

@@ -1,4 +1,5 @@
-from sentry.db.models import EncryptedJsonField, FlexibleForeignKey, Model, customer_silo_model
+from sentry.db.models import FlexibleForeignKey, Model, customer_silo_model
+from sentry.db.models.fields.jsonfield import JSONField
 
 
 @customer_silo_model
@@ -12,7 +13,7 @@ class ProjectIntegration(Model):
 
     project = FlexibleForeignKey("sentry.Project")
     integration = FlexibleForeignKey("sentry.Integration")
-    config = EncryptedJsonField(default=dict)
+    config = JSONField(default=dict)
 
     class Meta:
         app_label = "sentry"

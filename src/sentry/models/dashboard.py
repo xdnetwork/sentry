@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from sentry.db.models import FlexibleForeignKey, Model, customer_silo_model, sane_repr
 from sentry.db.models.fields.bounded import BoundedBigIntegerField
+from sentry.db.models.fields.jsonfield import JSONField
 
 
 @customer_silo_model
@@ -19,6 +20,8 @@ class Dashboard(Model):
     date_added = models.DateTimeField(default=timezone.now)
     visits = BoundedBigIntegerField(null=True, default=1)
     last_visited = models.DateTimeField(null=True, default=timezone.now)
+    projects = models.ManyToManyField("sentry.Project", db_table="sentry_dashboardproject")
+    filters = JSONField(null=True)
 
     class Meta:
         app_label = "sentry"
@@ -96,6 +99,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count()"],
                             "aggregates": ["count()"],
                             "columns": [],
+                            "orderby": "",
                         }
                     ],
                 },
@@ -110,6 +114,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count_unique(issue)"],
                             "aggregates": ["count_unique(issue)"],
                             "columns": [],
+                            "orderby": "",
                         }
                     ],
                 },
@@ -124,6 +129,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count()"],
                             "aggregates": ["count()"],
                             "columns": [],
+                            "orderby": "",
                         }
                     ],
                 },
@@ -138,6 +144,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count_unique(user)"],
                             "aggregates": ["count_unique(user)"],
                             "columns": [],
+                            "orderby": "",
                         },
                         {
                             "name": "Anonymous Users",
@@ -145,6 +152,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count_unique(user)"],
                             "aggregates": ["count_unique(user)"],
                             "columns": [],
+                            "orderby": "",
                         },
                     ],
                 },
@@ -159,6 +167,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count()"],
                             "aggregates": ["count()"],
                             "columns": [],
+                            "orderby": "",
                         },
                         {
                             "name": "Unhandled",
@@ -166,6 +175,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count()"],
                             "aggregates": ["count()"],
                             "columns": [],
+                            "orderby": "",
                         },
                     ],
                 },
@@ -180,6 +190,7 @@ PREBUILT_DASHBOARDS = {
                             "fields": ["count()"],
                             "aggregates": ["count()"],
                             "columns": [],
+                            "orderby": "",
                         }
                     ],
                 },
@@ -209,7 +220,7 @@ PREBUILT_DASHBOARDS = {
                             "aggregates": ["count()"],
                             "columns": ["transaction"],
                             "conditions": "!event.type:error",
-                            "orderby": "-count",
+                            "orderby": "-count()",
                         },
                     ],
                 },
@@ -239,7 +250,7 @@ PREBUILT_DASHBOARDS = {
                             "aggregates": ["count()"],
                             "columns": ["transaction"],
                             "conditions": "!event.type:error",
-                            "orderby": "-count",
+                            "orderby": "-count()",
                         },
                     ],
                 },
@@ -270,7 +281,7 @@ PREBUILT_DASHBOARDS = {
                             "aggregates": ["user_misery(300)"],
                             "columns": ["transaction"],
                             "conditions": "",
-                            "orderby": "-user_misery_300",
+                            "orderby": "-user_misery(300)",
                         },
                     ],
                 },
