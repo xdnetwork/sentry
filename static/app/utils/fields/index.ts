@@ -224,26 +224,32 @@ export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.Any]: {
+    desc: 'Transactions with a specific duration',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.P50]: {
+    desc: 'Returns the 50th percentile of the selected field',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.P75]: {
+    desc: 'Returns the 75th percentile of the selected field',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.P95]: {
+    desc: 'Returns the 95th percentile of the selected field',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.P99]: {
+    desc: 'Returns the 99th percentile of the selected field',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.P100]: {
+    desc: 'Returns the 100th percentile of the selected field',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.NONE,
   },
@@ -268,6 +274,7 @@ export const AGGREGATION_FIELDS: Record<string, FieldDefinition> = {
     valueType: FieldValueType.NONE,
   },
   [AggregationFields.LastSeen]: {
+    desc: 'Issues last seen at a date and time',
     kind: FieldKind.FUNCTION,
     valueType: FieldValueType.DATE,
   },
