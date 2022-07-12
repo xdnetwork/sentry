@@ -356,7 +356,7 @@ export const getTagItemsFromKeys = (
 
       const item: SearchItem = {
         value: keyWithColon,
-        title: key,
+        title: key.replace(/(?<=\()[^\)]*/g, '...'),
         documentation: definition?.desc ?? '-',
         kind,
       };
