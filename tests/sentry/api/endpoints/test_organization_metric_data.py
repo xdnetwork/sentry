@@ -794,7 +794,6 @@ class OrganizationMetricDataTest(MetricsAPIBaseTestCase):
             "transaction",
         ]:
             perf_indexer_record(self.organization.id, metric)
-
         response = self.get_success_response(
             self.organization.slug,
             field=[
@@ -2203,7 +2202,7 @@ class DerivedMetricsDataTest(MetricsAPIBaseTestCase):
                     "timestamp": user_ts,
                     "tags": {
                         self.session_status_tag: rh_indexer_record(self.organization.id, "crashed"),
-                        self.release_tag: perf_indexer_record(org_id, "foobar@1.0"),
+                        self.release_tag: rh_indexer_record(org_id, "foobar@1.0"),
                     },
                     "type": "s",
                     "value": [1, 2],
