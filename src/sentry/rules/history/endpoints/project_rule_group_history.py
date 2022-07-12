@@ -7,6 +7,7 @@ from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases.rule import RuleEndpoint
 from sentry.api.serializers import Serializer, serialize
 from sentry.api.serializers.models.group import BaseGroupSerializerResponse
@@ -46,6 +47,7 @@ class RuleGroupHistorySerializer(Serializer):  # type: ignore
 
 
 @extend_schema(tags=["issue_alerts"])
+@customer_silo_endpoint
 class ProjectRuleGroupHistoryIndexEndpoint(RuleEndpoint):
     @extend_schema(
         operation_id="Retrieve a group firing history for an issue alert",

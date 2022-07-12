@@ -6,6 +6,7 @@ from django.utils import timezone
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases import OrganizationEventsEndpointBase
 from sentry.snuba import discover
 
@@ -16,6 +17,7 @@ CACHE_TTL = 24 * 60 * 60
 logger = logging.getLogger(__name__)
 
 
+@customer_silo_endpoint
 class OrganizationHasMobileAppEvents(OrganizationEventsEndpointBase):
     def get(self, request: Request, organization) -> Response:
         # cache is unique to an org

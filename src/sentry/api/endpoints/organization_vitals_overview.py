@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sentry import experiments
+from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases import OrganizationEventsEndpointBase
 from sentry.models import Organization, Project, ProjectStatus
 from sentry.snuba import discover
@@ -19,6 +20,7 @@ NAME_MAPPING = {
 }
 
 
+@customer_silo_endpoint
 class OrganizationVitalsOverviewEndpoint(OrganizationEventsEndpointBase):
     private = True
 

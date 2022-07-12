@@ -7,6 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sentry import features
+from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases import NoProjects
 from sentry.api.bases.organization import OrganizationEndpoint
 from sentry.api.paginator import GenericOffsetPaginator
@@ -67,6 +68,7 @@ class OrganizationProfilingPaginatedBaseEndpoint(OrganizationProfilingBaseEndpoi
         )
 
 
+@customer_silo_endpoint
 class OrganizationProfilingTransactionsEndpoint(OrganizationProfilingPaginatedBaseEndpoint):
     def get_data_fn(self, organization: Organization, kwargs: Dict[str, Any]) -> Any:
         def data_fn(offset: int, limit: int) -> Any:
@@ -85,6 +87,7 @@ class OrganizationProfilingTransactionsEndpoint(OrganizationProfilingPaginatedBa
         return data_fn
 
 
+@customer_silo_endpoint
 class OrganizationProfilingProfilesEndpoint(OrganizationProfilingPaginatedBaseEndpoint):
     def get_data_fn(self, organization: Organization, kwargs: Dict[str, Any]) -> Any:
         def data_fn(offset: int, limit: int) -> Any:
@@ -103,6 +106,7 @@ class OrganizationProfilingProfilesEndpoint(OrganizationProfilingPaginatedBaseEn
         return data_fn
 
 
+@customer_silo_endpoint
 class OrganizationProfilingFiltersEndpoint(OrganizationProfilingBaseEndpoint):
     def get(self, request: Request, organization: Organization) -> StreamingHttpResponse:
         if not features.has("organizations:profiling", organization, actor=request.user):

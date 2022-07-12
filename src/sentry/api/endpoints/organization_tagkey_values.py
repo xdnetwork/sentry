@@ -3,12 +3,14 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sentry import tagstore
+from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases import NoProjects, OrganizationEventsEndpointBase
 from sentry.api.paginator import SequencePaginator
 from sentry.api.serializers import serialize
 from sentry.tagstore.base import TAG_KEY_RE
 
 
+@customer_silo_endpoint
 class OrganizationTagKeyValuesEndpoint(OrganizationEventsEndpointBase):
     def get(self, request: Request, organization, key) -> Response:
         if not TAG_KEY_RE.match(key):
