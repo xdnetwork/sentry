@@ -437,19 +437,39 @@ export const setSearchGroupItemActive = (
   });
 };
 
+/**
+ * Consider the following query and tagKey a match when this percentage of the keywords match the words in the query.
+ */
+const KEYWORD_MATCH_PERCENTAGE = 0.75;
+
+/**
+ * Filter tag keys based on the query and the key, description, and associated keywords of each tag.
+ */
 export const filterKeysFromQuery = (tagKeys: string[], query: string): string[] => {
-  const queryWords = query.split(/[\. -]/g);
+  // Split query by periods, spaces, dashes, and underscores.
+  const queryWords = query.split(/[\. -_]/g).flatMap(word => {
+    const trimmed = word.trim();
+    if (trimmed !== '') {
+      return [trimmed];
+    }
+    return [];
+  });
 
   return tagKeys.filter(key => {
-    const definition = getFieldDefinition(key);
+    const keyWithoutFunctionPart = key.replaceAll(/\(.*\)$/g, '');
+    const definition = getFieldDefinition(keyWithoutFunctionPart);
 
-    const keyWords = [key, definition?.desc ?? '', ...(definition?.keywords ?? [])].join(
-      ' '
-    );
+    const combinedKeywords = [
+      ...key.split(/[\. -_]/g),
+      ...(definition?.desc ? [definition.desc] : []),
+      ...(definition?.keywords ?? []),
+    ].join(' ');
 
-    const totalWordCount = queryWords.length;
-    const matchingWords = queryWords.filter(word => keyWords.includes(word)).length;
+    const totalQueryWordCount = queryWords.length;
+    const matchingWords = queryWords.filter(word =>
+      combinedKeywords.includes(word)
+    ).length;
 
-    return matchingWords / totalWordCount > 0.75;
+    return matchingWords / totalQueryWordCount > KEYWORD_MATCH_PERCENTAGE;
   });
 };
