@@ -418,6 +418,7 @@ class ReleaseModelManager(BaseManager):
         return release_version or None
 
 
+@customer_silo_model
 class Release(Model):
     """
     A release is generally created when a new version is pushed into a

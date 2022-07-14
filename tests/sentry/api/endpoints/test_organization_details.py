@@ -23,8 +23,10 @@ from sentry.models import (
     OrganizationStatus,
     ScheduledDeletion,
 )
+from sentry.servermode import ServerComponentMode
 from sentry.signals import project_created
 from sentry.testutils import APITestCase, TwoFactorAPITestCase, pytest
+from sentry.testutils.servermode import ServerModeTest
 from sentry.utils import json
 
 # some relay keys
@@ -53,6 +55,7 @@ class OrganizationDetailsTestBase(APITestCase):
         self.login_as(self.user)
 
 
+@ServerModeTest(ServerComponentMode.CUSTOMER)
 class OrganizationDetailsTest(OrganizationDetailsTestBase):
     def test_simple(self):
         response = self.get_success_response(self.organization.slug)
