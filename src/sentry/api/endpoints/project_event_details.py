@@ -77,6 +77,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 
+@customer_silo_endpoint
 class EventJsonEndpoint(ProjectEndpoint):
     def get(self, request: Request, project, event_id) -> Response:
         event = eventstore.get_event_by_id(project.id, event_id)

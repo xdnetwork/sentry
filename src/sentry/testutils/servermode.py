@@ -1,4 +1,5 @@
 import functools
+from contextlib import contextmanager
 
 from django.test import override_settings
 
@@ -44,3 +45,9 @@ class ServerModeTest:
         if isinstance(decorated_test_obj, type):
             return self._apply_modes_to_all_methods(decorated_test_obj)
         return self._create_mode_test_method(decorated_test_obj)
+
+
+@contextmanager
+def mode_exempt_setup():
+    with override_settings(SERVER_COMPONENT_MODE=ServerComponentMode.MONOLITH):
+        yield
