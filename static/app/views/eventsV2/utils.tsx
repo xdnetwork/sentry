@@ -21,6 +21,8 @@ import {
   Aggregation,
   AGGREGATIONS,
   Column,
+  ColumnType,
+  ColumnValueType,
   explodeFieldString,
   Field,
   getAggregateAlias,
@@ -101,7 +103,7 @@ export function decodeColumnOrder(
       column.isSortable = aggregate && aggregate.isSortable;
     } else if (col.kind === 'field') {
       if (FIELDS.hasOwnProperty(col.field)) {
-        column.type = FIELDS[col.field].valueType;
+        column.type = FIELDS[col.field].valueType as ColumnValueType;
       } else if (isMeasurement(col.field)) {
         column.type = measurementType(col.field);
       } else if (isSpanOperationBreakdownField(col.field)) {
@@ -503,7 +505,8 @@ export function generateFieldOptions({
         kind: FieldValueKind.FIELD,
         meta: {
           name: field,
-          dataType: getFieldDefinition(field)?.valueType ?? FieldValueType.STRING,
+          dataType: (getFieldDefinition(field)?.valueType ??
+            FieldValueType.STRING) as ColumnType,
         },
       },
     };
