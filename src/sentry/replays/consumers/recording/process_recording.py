@@ -16,8 +16,9 @@ from arroyo.types import Message, Position
 from django.conf import settings
 
 from sentry.attachments import MissingAttachmentChunks, attachment_cache
-from sentry.models import EventAttachment, File
+from sentry.models import File
 from sentry.replays.consumers.recording.types import RecordingChunkMessage, RecordingMessage
+from sentry.replays.models import ReplayRecordingSegment
 from sentry.utils import json
 
 logger = logging.getLogger("sentry.replays")
@@ -85,12 +86,11 @@ class ProcessRecordingStrategy(ProcessingStrategy[KafkaPayload]):
             blob_size=settings.SENTRY_ATTACHMENT_BLOB_SIZE,
         )
         # associate this file with an indexable replay_id via EventAttachment
-        EventAttachment.objects.create(
-            event_id=message_dict["replay_id"],
+        ReplayRecordingSegment.objects.create(
+            replay_id=message_dict["replay_id"],
             project_id=message_dict["project_id"],
-            name=recording_file_name,
+            sequence_id=message_dict["recording_headers"]["sequence_id"],
             file_id=file.id,
-            type="replay.recording",
         )
 
     def _get_from_cache(self, message_dict):

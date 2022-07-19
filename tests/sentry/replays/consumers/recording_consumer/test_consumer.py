@@ -7,9 +7,9 @@ import msgpack
 from arroyo import Message, Partition, Topic
 from arroyo.backends.kafka import KafkaPayload
 
-from sentry.models import EventAttachment, File
+from sentry.models import File
 from sentry.replays.consumers.recording.factory import ProcessReplayRecordingStrategyFactory
-from sentry.replays.consumers.recording.process_recording import ProcessRecordingStrategy
+from sentry.replays.models import ReplayRecordingSegment
 from sentry.testutils.cases import TestCase
 
 
@@ -27,7 +27,7 @@ class TestRecordingsConsumerEndToEnd(TestCase):
         self.replay_recording_id = uuid.uuid4().hex
 
     def test_basic_flow(self):
-        processing_strategy = ProcessRecordingStrategy(commit)
+        processing_strategy = self.processing_factory().create_with_partitions(lambda x: None, None)
         sequence_id = 0
         consumer_messages = [
             {
@@ -73,5 +73,4 @@ class TestRecordingsConsumerEndToEnd(TestCase):
 
         assert recording
         assert recording.checksum == sha1(b"testfoobar").hexdigest()
-
-        assert EventAttachment.objects.get(event_id=self.replay_id)
+        assert ReplayRecordingSegment.objects.get(replay_id=self.replay_id)

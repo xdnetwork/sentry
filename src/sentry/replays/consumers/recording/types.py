@@ -9,7 +9,7 @@ class RecordingChunkMessage(TypedDict):
     chunk_index: int
 
 
-class ReplayRecordingAttachment(TypedDict):
+class ReplayRecording(TypedDict):
     chunks: int
     id: str
 
@@ -22,4 +22,4 @@ class RecordingMessage(TypedDict):
     replay_id: str
     project_id: int
     recording_headers: RecordingHeaders
-    replay_recording: ReplayRecordingAttachment
+    replay_recording: ReplayRecording
