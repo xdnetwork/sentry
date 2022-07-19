@@ -2712,5 +2712,5 @@ SENTRY_POST_PROCESS_LOCKS_BACKEND_OPTIONS = {
 # maximum number of projects allowed to query snuba with for the organization_vitals_overview endpoint
 ORGANIZATION_VITALS_OVERVIEW_PROJECT_LIMIT = 300
 
-SERVER_COMPONENT_MODE = None
+SERVER_COMPONENT_MODE = os.environ.get("SENTRY_SERVER_COMPONENT_MODE")
 FAIL_ON_UNAVAILABLE_API_CALL = False
