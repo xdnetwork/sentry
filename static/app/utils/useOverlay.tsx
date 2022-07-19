@@ -11,7 +11,7 @@ import {mergeProps} from '@react-aria/utils';
 import {useOverlayTriggerState} from '@react-stately/overlays';
 import {OverlayTriggerProps as OverlayTriggerStateProps} from '@react-types/overlays';
 
-interface UseOverlayProps
+export interface UseOverlayProps
   extends Partial<OverlayProps>,
     Partial<OverlayTriggerProps>,
     Partial<OverlayTriggerStateProps> {
@@ -118,11 +118,14 @@ function useOverlay({
   );
 
   return {
+    state: openState,
     isOpen: openState.isOpen,
+    triggerRef,
     triggerProps: {
       ref: setTriggerElement,
       ...mergeProps(buttonProps, triggerProps),
     },
+    overlayRef,
     overlayProps: {
       ref: setOverlayElement,
       style: popperStyles.popper,

@@ -100,11 +100,6 @@ export type ControlProps<OptionType = GeneralSelectValue> = Omit<
    */
   inFieldLabel?: string;
   /**
-   * Whether this is used inside compactSelect. See
-   * components/compactSelect.tsx
-   */
-  isCompact?: boolean;
-  /**
    * Maximum width of the menu component. Menu item labels that overflow the
    * menu's boundaries will automatically be truncated.
    */
@@ -151,7 +146,7 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
   props: WrappedControlProps<OptionType>
 ) {
   const theme = useTheme();
-  const {isCompact, isSearchable, maxMenuWidth, menuHeight} = props;
+  const {maxMenuWidth} = props;
 
   // TODO(epurkhiser): The loading indicator should probably also be our loading
   // indicator.
@@ -200,21 +195,6 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
         ...(!state.isSearchable && {
           cursor: 'pointer',
         }),
-        ...(isCompact && {
-          padding: `${space(0.5)} ${space(0.5)}`,
-          borderRadius: 0,
-          border: 'none',
-          boxShadow: 'none',
-          cursor: 'initial',
-          minHeight: 'none',
-          ...(isSearchable
-            ? {marginTop: 1}
-            : {
-                height: 0,
-                padding: 0,
-                overflow: 'hidden',
-              }),
-        }),
       }),
 
       menu: (provided: React.CSSProperties) => ({
@@ -228,27 +208,6 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
         width: 'auto',
         minWidth: '100%',
         maxWidth: maxMenuWidth ?? 'auto',
-        ...(isCompact && {
-          position: 'relative',
-          margin: 0,
-          borderRadius: 0,
-          border: 'none',
-          boxShadow: 'none',
-          zIndex: 'initial',
-          ...(isSearchable && {paddingTop: 0}),
-        }),
-      }),
-
-      menuList: (provided: React.CSSProperties) => ({
-        ...provided,
-        ...(isCompact && {
-          ...(menuHeight && {
-            maxHeight: menuHeight,
-          }),
-          ...(isSearchable && {
-            paddingTop: 0,
-          }),
-        }),
       }),
 
       menuPortal: () => ({
@@ -279,22 +238,10 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
       valueContainer: (provided: React.CSSProperties) => ({
         ...provided,
         alignItems: 'center',
-        ...(isCompact && {
-          fontSize: theme.fontSizeMedium,
-          padding: `${space(0.5)} ${space(1)}`,
-          border: `1px solid ${theme.innerBorder}`,
-          borderRadius: theme.borderRadius,
-          cursor: 'text',
-          background: theme.backgroundSecondary,
-        }),
       }),
       input: (provided: React.CSSProperties) => ({
         ...provided,
         color: theme.formText,
-        ...(isCompact && {
-          padding: 0,
-          margin: 0,
-        }),
       }),
       singleValue: (provided: React.CSSProperties) => ({
         ...provided,
@@ -305,10 +252,6 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
       placeholder: (provided: React.CSSProperties) => ({
         ...provided,
         color: theme.formPlaceholder,
-        ...(isCompact && {
-          padding: 0,
-          margin: 0,
-        }),
       }),
       multiValue: (provided: React.CSSProperties) => ({
         ...provided,
@@ -344,7 +287,6 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
         gridAutoFlow: 'column',
         gridGap: '2px',
         marginRight: '6px',
-        ...(isCompact && {display: 'none'}),
       }),
       clearIndicator: indicatorStyles,
       dropdownIndicator: indicatorStyles,
@@ -365,7 +307,7 @@ function SelectControl<OptionType extends GeneralSelectValue = GeneralSelectValu
         },
       }),
     }),
-    [theme, maxMenuWidth, menuHeight, indicatorStyles, isSearchable, isCompact]
+    [theme, maxMenuWidth, indicatorStyles]
   );
 
   const getFieldLabelStyle = (label?: string) => ({
