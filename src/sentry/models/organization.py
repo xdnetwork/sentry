@@ -196,6 +196,7 @@ class Organization(Model):
             with TimedRetryPolicy(10)(lock.acquire):
                 slugify_target = slugify_target.replace("_", "-").strip("-")
                 slugify_instance(self, slugify_target, reserved=RESERVED_ORGANIZATION_SLUGS)
+                breakpoint()
         super().save(*args, **kwargs)
 
     def delete(self, **kwargs):
