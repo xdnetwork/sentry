@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
@@ -77,7 +79,6 @@ class ProjectSettingsSamplingTest(AcceptanceTestCase):
         self.browser.get(self.path)
         self.browser.wait_until_not('[data-test-id="loading-indicator"]')
 
-    @pytest.mark.skip(reason="Flaky")
     def test_add_uniform_rule_with_recommended_sampling_values(self):
         with self.feature(FEATURE_NAME):
             self.wait_until_page_loaded()
@@ -88,6 +89,7 @@ class ProjectSettingsSamplingTest(AcceptanceTestCase):
             # Wait for modal to load
             self.browser.wait_until('[role="dialog"]')
             self.browser.wait_until_not('[data-test-id="loading-indicator"]')
+            time.sleep(1)
 
             # Click on the recommended sampling values option
             self.browser.element('[id="sampling-recommended"]').click()
@@ -122,6 +124,7 @@ class ProjectSettingsSamplingTest(AcceptanceTestCase):
             # Wait for modal to load
             self.browser.wait_until('[role="dialog"]')
             self.browser.wait_until_not('[data-test-id="loading-indicator"]')
+            time.sleep(1)
 
             # Enter a custom value for client side sampling
             self.browser.element('[id="recommended-client-sampling"]').clear()
