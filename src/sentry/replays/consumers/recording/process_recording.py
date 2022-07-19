@@ -20,7 +20,8 @@ from sentry.models import EventAttachment, File
 from sentry.replays.consumers.recording.types import RecordingChunkMessage, RecordingMessage
 from sentry.utils import json
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("sentry.replays")
+
 CACHE_TIMEOUT = 3600
 
 
@@ -71,8 +72,12 @@ class ProcessRecordingStrategy(ProcessingStrategy[KafkaPayload]):
 
     def _store(self, message_dict: RecordingMessage, recording: bytes) -> None:
         # create a File for our recording segment.
+        recording_file_name = (
+            f"rr:{message_dict['replay_id']}:{message_dict['recording_headers']['sequence_id']}"
+        )
+
         file = File.objects.create(
-            name=f"rr:{message_dict['replay_recording']['id']}",
+            name=recording_file_name,
             type="replay.recording",
         )
         file.putfile(
@@ -83,7 +88,7 @@ class ProcessRecordingStrategy(ProcessingStrategy[KafkaPayload]):
         EventAttachment.objects.create(
             event_id=message_dict["replay_id"],
             project_id=message_dict["project_id"],
-            name=f"rr:{message_dict['replay_id']}:{message_dict['recording_headers']['sequence_id']}",
+            name=recording_file_name,
             file_id=file.id,
             type="replay.recording",
         )
@@ -105,9 +110,7 @@ class ProcessRecordingStrategy(ProcessingStrategy[KafkaPayload]):
     def _process_recording(
         self, message_dict: RecordingMessage, message: Message[KafkaPayload]
     ) -> None:
-
         recording = self._get_from_cache(message_dict)
-
         # split the recording payload by a newline into the headers and the recording
         try:
             recording_headers, recording = recording.split(b"\n", 1)
@@ -128,6 +131,7 @@ class ProcessRecordingStrategy(ProcessingStrategy[KafkaPayload]):
 
     def submit(self, message: Message[KafkaPayload]) -> None:
         assert not self.__closed
+
         # TODO: validate schema against json schema?
         try:
             message_dict = msgpack.unpackb(message.payload.value)
