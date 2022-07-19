@@ -6,6 +6,7 @@ from sentry.api.base import customer_silo_endpoint
 from sentry.api.bases import NoProjects, OrganizationEventsEndpointBase
 from sentry.models import Organization, Project
 from sentry.search.events.constants import METRIC_FUNCTION_LIST_BY_TYPE
+from sentry.sentry_metrics.configuration import UseCaseKey
 from sentry.snuba.metrics.datasource import get_custom_measurements
 
 
@@ -25,6 +26,7 @@ class OrganizationMeasurementsMeta(OrganizationEventsEndpointBase):  # type: ign
                 organization=organization,
                 start=params["start"],
                 end=params["end"],
+                use_case_id=UseCaseKey.PERFORMANCE,
             )
 
         with start_span(op="transform", description="metric meta"):
